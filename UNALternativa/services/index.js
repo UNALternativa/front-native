@@ -1,4 +1,4 @@
-const url = "localhost:3000/";
+const url = "http://127.0.0.1:3000";
 import * as Crypto from "expo-crypto";
 
 export const login = async (email: string, password: string) => {
@@ -13,7 +13,11 @@ export const login = async (email: string, password: string) => {
 
     const response = await fetch(url + "/usuario/login", {
       method: "POST",
-      body: body,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: body
     });
     const json = await response.json();
     const result = json.password == hash;
@@ -34,8 +38,8 @@ const register = async (email: string, password: string) => {
       });
     });
 
-    const response = await fetch(url + "/usuario/login", {
-      method: "GET",
+    const response = await fetch(url + "usuario/registrar_usuario", {
+      method: "POST",
       body: body,
     });
     const json = await response.json();
