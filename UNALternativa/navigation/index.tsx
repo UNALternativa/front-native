@@ -59,6 +59,7 @@ function RootNavigator() {
         options={{
           title: 'Register',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false
         }}
       />
     </Drawer.Navigator>

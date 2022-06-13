@@ -4,6 +4,7 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import {login} from "../services";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 export default function Login({ navigation }: RootTabScreenProps<"Login">) {
@@ -14,7 +15,16 @@ export default function Login({ navigation }: RootTabScreenProps<"Login">) {
   const logueo = () => {
     console.log(`login ${email} ${password}`);
     try{
-        login(email, password);
+      login(email, password).then( (success) => {
+        if ( success ){
+          showMessage({
+            message: "Autenticado con Exito",
+            type: "success",
+          });
+          {/*navigation.navigate('Login');*/}
+        } 
+      });
+      
     }catch(error) {
         console.log(error)
     }
@@ -40,6 +50,13 @@ export default function Login({ navigation }: RootTabScreenProps<"Login">) {
         onPress={() => logueo()}
       >
         <Text style={styles.text_button}>Inicio</Text>
+      </Pressable>
+      <Pressable
+        onPress={() =>
+          navigation.navigate('Register')
+        }
+      >
+        <Text style={styles.text_button}>¿Nuevo aqui?¡Regístrate!</Text>
       </Pressable>
     </View>
   );

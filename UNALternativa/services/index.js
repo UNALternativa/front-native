@@ -7,7 +7,7 @@ export const login = async (email: string, password: string) => {
         Crypto.CryptoDigestAlgorithm.SHA256,
         password);
     let body = JSON.stringify({
-      email: email,
+      correo: email,
       password: hash,
     });
 
@@ -27,27 +27,31 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-const register = async (email: string, password: string) => {
+export const registering = async (email: string, name: string, password: string) => {
   try {
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, function (err, hash) {
-        body = JSON.stringify({
-          email: email,
-          password: hash,
-        });
-      });
+    let hash = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256,
+      password);
+    let body = JSON.stringify({
+      correo: email,
+      nombre: name,
+      password: hash,
     });
 
-    const response = await fetch(url + "usuario/registrar_usuario", {
+    const response = await fetch(url + "/usuario/registrar_usuario", {
       method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       body: body,
     });
     const json = await response.json();
-    const result = await bcrypt.compare(json.password, hash);
+    const result = json.password == hash;
     return result;
   } catch (error) {
     console.error(error);
   }
 };
 
-export default { login, register };
+export default { login, registering };

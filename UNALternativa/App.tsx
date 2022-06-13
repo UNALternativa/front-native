@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import FlashMessage from "react-native-flash-message";
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
@@ -17,6 +18,7 @@ export default function App() {
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />
         <StatusBar />
+        <FlashMessage position="top" />
       </SafeAreaProvider>
     );
   }
