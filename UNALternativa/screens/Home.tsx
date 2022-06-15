@@ -6,6 +6,8 @@ import { RootTabScreenProps } from "../types";
 import { get_huella } from "../services";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import '../global/global.js'
+import {useNavigationState} from '@react-navigation/native';
+
 
 
 export default function Home({ navigation }: RootTabScreenProps<"Home">) {
@@ -15,6 +17,7 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
   const [HuellaSemanal,onChangeHuella] = useState(0);
   const [HuellaMensual,onChangeHuellaM] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const navigationState = useNavigationState(state => state);
 
 
 
@@ -23,14 +26,12 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
             <Text style={styles.text_button}> 1000 Puntos</Text>
             </View>;
     };
-  
-  useEffect(() => {
-    get_huella(global.id_user).then((huella) =>{
-      onChangeHuella(Math.round(huella.huella_semanal*100)/100);
-      onChangeHuellaM(Math.round(huella.huella_mensual*100)/100);
-      setIsLoading(false);
-      console.log(huella)
-    })
+    useEffect(() => {
+        get_huella(global.id_user).then((huella) =>{
+        onChangeHuella(Math.round(huella.huella_semanal*100)/100);
+        onChangeHuellaM(Math.round(huella.huella_mensual*100)/100);
+        setIsLoading(false);
+      }, [navigationState]);
     
   })
 

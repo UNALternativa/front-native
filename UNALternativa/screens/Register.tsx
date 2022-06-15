@@ -65,11 +65,15 @@ export default function Register({ navigation }: RootTabScreenProps<'Register'>)
       <TextInput style={styles.input} 
                  placeholder="Contrseña" 
                  onChangeText={string => onChangePassword(string)}
-                 value={password}/>
+                 value={password}
+                 type="password"
+                 secureTextEntry={true}/>
       <TextInput style={styles.input} 
                  placeholder="Confirmar contraseña" 
                  onChangeText={string => onChangePasswordConfirm(string)}
-                 value={passwordConfirm}/>
+                 value={passwordConfirm}
+                 type="password"
+                 secureTextEntry={true}/>
       <Pressable style={styles.button}
         onPress={() => Registration()}
       >
