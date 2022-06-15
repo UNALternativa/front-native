@@ -28,7 +28,7 @@ export default function Login({ navigation }: RootTabScreenProps<"Login">) {
         } else {
           showMessage({
             message: "Error en autenticado",
-            type: "error",
+            type: "danger",
           });
         }
       });

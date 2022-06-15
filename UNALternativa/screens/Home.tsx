@@ -7,17 +7,32 @@ import {login} from "../services";
 import { showMessage, hideMessage } from "react-native-flash-message";
 
 
-export default function Login({ navigation }: RootTabScreenProps<"Login">) {
+export default function Home({ navigation }: RootTabScreenProps<"Home">) {
   
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
+  const [HuellaSemanal,onChangeHuella] = useState(0);
 
+
+    const Circle = () => {
+        return <View style={styles.circle}>
+            <Text style={styles.text_button}> 1000 Puntos</Text>
+            </View>;
+    };
   
+
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      
+      <Text style={styles.title}>Hola, usted tiene</Text>
+      <Circle/>
+      <Text style={styles.text}>Huella de carbono semanal aproximada: {HuellaSemanal} kg de CO2</Text>
+      <Text style={styles.text}>Huella de carbono Mensual aproximada: {HuellaSemanal * 4} kg de CO2</Text>
+      <Pressable style={styles.button}
+        onPress={() => navigation.navigate('DataUpdate')}
+      >
+        <Text style={styles.text_button}>Registrar datos</Text>
+      </Pressable>
     </View>
   );
 }
@@ -37,6 +52,12 @@ const styles = StyleSheet.create({
     color: "rgba(255,255,255,1)",
     marginVertical: 30,
   },
+  text: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "rgba(255,255,255,1)",
+    marginVertical: 30,
+  },
   separator: {
     marginVertical: 30,
     height: 1,
@@ -52,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,1)",
   },
   button: {
-    width: "30%",
+    width: "50%",
     height: "10%",
     margin: 12,
     borderWidth: 1,
@@ -66,6 +87,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "rgba(255,255,255,1)",
+  },
+  circle: {
+    width: 200,
+    height: 200,
+    borderRadius: 200 / 2,
+    backgroundColor: "rgba(241,184,7,255)",
+    justifyContent: "center",
+    alignItems: 'center',
   }
 });
 
