@@ -21,7 +21,7 @@ export default function Login({ navigation }: RootTabScreenProps<"Login">) {
             message: "Autenticado con Exito",
             type: "success",
           });
-          {/*navigation.navigate('Login');*/}
+          navigation.navigate('Home');
         } 
       });
       

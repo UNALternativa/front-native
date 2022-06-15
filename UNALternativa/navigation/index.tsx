@@ -19,6 +19,8 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
+import Home from '../screens/Home';
+import DataUpdate from '../screens/DataUpdate';
 
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -58,6 +60,24 @@ function RootNavigator() {
         component={Register}
         options={{
           title: 'Register',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false
+        }}
+      />
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false
+        }}
+      />
+      <Drawer.Screen
+        name="DataUpdate"
+        component={DataUpdate}
+        options={{
+          title: 'DataUpdate',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerShown: false
         }}
