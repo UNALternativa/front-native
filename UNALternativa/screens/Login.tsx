@@ -5,12 +5,14 @@ import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import {login} from "../services";
 import { showMessage, hideMessage } from "react-native-flash-message";
-
+import '../global/global.js'
 
 export default function Login({ navigation }: RootTabScreenProps<"Login">) {
   
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
+
+  
 
   const logueo = () => {
     console.log(`login ${email} ${password}`);
@@ -21,8 +23,14 @@ export default function Login({ navigation }: RootTabScreenProps<"Login">) {
             message: "Autenticado con Exito",
             type: "success",
           });
-          {/*navigation.navigate('Login');*/}
-        } 
+          console.log(global.id_user);
+          navigation.navigate('Home')
+        } else {
+          showMessage({
+            message: "Error en autenticado",
+            type: "error",
+          });
+        }
       });
       
     }catch(error) {

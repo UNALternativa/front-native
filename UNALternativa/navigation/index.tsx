@@ -6,10 +6,13 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView,
+  DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import React, {useState, createRef} from 'react';
+import { ColorSchemeName, Pressable, Button } from 'react-native';
+
+import '../global/global.js'
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -19,12 +22,21 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
+import Home from '../screens/Home';
+
 
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
+
+
+
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  
+  
+  
+  
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -38,11 +50,58 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator();
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      
+    {global.id_user == null ? <DrawerItem
+      label="Login"
+      onPress={() => {
+        props.navigation.navigate('Login');
+      }}
+    /> : null}
+    {global.id_user == null ? <DrawerItem
+      label="Register"
+      onPress={() => {
+        props.navigation.navigate('Register');
+      }}
+    /> : null}
+    {global.id_user ? <DrawerItem
+      label="Home"
+      onPress={() => {
+        props.navigation.navigate('Home');
+      }}
+    /> : null}
+    {global.id_user ? <DrawerItem
+      label="Cerrar Sesion"
+      onPress={() => {
+        global.id_user = null;
+        props.navigation.navigate('Login');
+      }}
+    /> : null}
+    
+    </DrawerContentScrollView>
+  );
+}
+
+
+
 function RootNavigator() {
   return (
-    <Drawer.Navigator >
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerShown: false
+        }}
+      />
       <Drawer.Screen
         name="Login"
         component={Login}
@@ -50,6 +109,15 @@ function RootNavigator() {
           title: 'Login',
           tabBarShowLabel: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color}  />,
+          headerShown: false
+        }}
+      />
+      <Drawer.Screen
+        name="Logout"
+        component={Login}
+        options={{
+          title: 'Cerrar Sesion',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerShown: false
         }}
       />
@@ -62,7 +130,9 @@ function RootNavigator() {
           headerShown: false
         }}
       />
+      
     </Drawer.Navigator>
+    
   );
 }
 
@@ -98,6 +168,14 @@ function BottomTabNavigator() {
         component={Register}
         options={{
           title: 'Register',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

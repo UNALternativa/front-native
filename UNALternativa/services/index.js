@@ -1,6 +1,6 @@
 const url = "http://127.0.0.1:3000";
 import * as Crypto from "expo-crypto";
-
+import "../global/global.js"
 export const login = async (email: string, password: string) => {
   try {
     let hash = await Crypto.digestStringAsync(
@@ -20,7 +20,9 @@ export const login = async (email: string, password: string) => {
       body: body
     });
     const json = await response.json();
+    console.log(json);
     const result = json.password == hash;
+    global.id_user = json._id;
     return result;
   } catch (error) {
     console.error(error);
