@@ -92,7 +92,7 @@ function CustomDrawerContent(props) {
 
 function RootNavigator() {
   return (
-    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+    <Drawer.Navigator initialRouteName="Login" drawerContent={(props) => <CustomDrawerContent {...props} />}>
       <Drawer.Screen
         name="Home"
         component={Home}
@@ -126,15 +126,6 @@ function RootNavigator() {
         component={Register}
         options={{
           title: 'Register',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerShown: false
-        }}
-      />
-      <Drawer.Screen
-        name="Home"
-        component={Home}
-        options={{
-          title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerShown: false
         }}

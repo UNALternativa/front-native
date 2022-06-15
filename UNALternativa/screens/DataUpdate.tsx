@@ -4,9 +4,10 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import DropDownPicker from 'react-native-dropdown-picker'
 import { RootTabScreenProps } from "../types";
-import {login} from "../services";
+import {registering_location, registering_avg_trips} from "../services";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import * as Location from 'expo-location';
+import '../global/global.js'
 
 
 export default function DataUpdate({ navigation }: RootTabScreenProps<"DataUpdate">) {
@@ -76,7 +77,6 @@ export default function DataUpdate({ navigation }: RootTabScreenProps<"DataUpdat
       }
       let currentlocation = await Location.getCurrentPositionAsync({});
       setLocation(currentlocation);
-      console.log("%j", currentlocation)
       if(AutomovilValue+BicicletaValue+BusTransmilenioValue+CaminandoValue > 7){
         showMessage({
           message: "La cantidad de dias indicados supera los 7 dias de la semana",
@@ -85,6 +85,37 @@ export default function DataUpdate({ navigation }: RootTabScreenProps<"DataUpdat
         });
         return;
       }
+      let result = registering_location(global.id_user,[currentlocation.coords.latitude, currentlocation.coords.longitude]);
+      if(result){
+        showMessage({
+          message: "Se cambio la ubicacion",
+          duration: 3500,
+          type: "success",
+        });
+        let result2 = registering_avg_trips(global.id_user,AutomovilValue,BicicletaValue,BusTransmilenioValue,CaminandoValue)
+        if(result2){
+          showMessage({
+            message: "Se actualizo la huella",
+            duration: 3500,
+            type: "success",
+          });
+          navigation.navigate('Home')
+        }else{
+          showMessage({
+            message: "Hubo un error",
+            duration: 3500,
+            type: "danger",
+          });
+        }
+        
+      }else{
+        showMessage({
+          message: "Hubo un error",
+          duration: 3500,
+          type: "danger",
+        });
+      }
+    
     })();
     
   }

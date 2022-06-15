@@ -1,10 +1,11 @@
 import { StyleSheet, TextInput, Pressable } from "react-native";
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
-import {login} from "../services";
+import { get_huella } from "../services";
 import { showMessage, hideMessage } from "react-native-flash-message";
+import '../global/global.js'
 
 
 export default function Home({ navigation }: RootTabScreenProps<"Home">) {
@@ -12,6 +13,9 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
   const [HuellaSemanal,onChangeHuella] = useState(0);
+  const [HuellaMensual,onChangeHuellaM] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
 
 
     const Circle = () => {
@@ -20,14 +24,33 @@ export default function Home({ navigation }: RootTabScreenProps<"Home">) {
             </View>;
     };
   
+  useEffect(() => {
+    get_huella(global.id_user).then((huella) =>{
+      onChangeHuella(Math.round(huella.huella_semanal*100)/100);
+      onChangeHuellaM(Math.round(huella.huella_mensual*100)/100);
+      setIsLoading(false);
+      console.log(huella)
+    })
+    
+  })
 
+  if (isLoading){
+    return (
+      <View style={styles.container}>
+      <Text style={styles.title}>Hola, usted tiene</Text>
+      <Circle/>
+      <Text style={styles.text}>Huella de carbono semanal aproximada: 0 kg de CO2</Text>
+      <Text style={styles.text}>Huella de carbono Mensual aproximada: 0 kg de CO2</Text>
+    </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hola, usted tiene</Text>
       <Circle/>
       <Text style={styles.text}>Huella de carbono semanal aproximada: {HuellaSemanal} kg de CO2</Text>
-      <Text style={styles.text}>Huella de carbono Mensual aproximada: {HuellaSemanal * 4} kg de CO2</Text>
+      <Text style={styles.text}>Huella de carbono Mensual aproximada: {HuellaMensual} kg de CO2</Text>
       <Pressable style={styles.button}
         onPress={() => navigation.navigate('DataUpdate')}
       >
